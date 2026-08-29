@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>Нежное приглашение</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #fefaf5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Quicksand', sans-serif;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ===== ФОНОВЫЕ СЕРДЕЧКИ С КАЧАНИЕМ ===== */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .heart-shape {
+            position: absolute;
+            color: rgba(255, 130, 160, 0.20);
+            font-size: 2rem;
+            user-select: none;
+            animation: floatAndSway 20s infinite alternate ease-in-out;
+            will-change: transform;
+        }
+
+        @keyframes floatAndSway {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            15% { transform: translate(12px, -10px) rotate(4deg) scale(1.05); }
+            30% { transform: translate(-8px, -25px) rotate(-6deg) scale(0.95); }
+            45% { transform: translate(18px, -15px) rotate(3deg) scale(1.08); }
+            60% { transform: translate(-12px, -40px) rotate(-4deg) scale(0.92); }
+            75% { transform: translate(15px, -20px) rotate(5deg) scale(1.06); }
+            90% { transform: translate(-6px, -45px) rotate(-2deg) scale(1.02); }
+            100% { transform: translate(8px, -30px) rotate(2deg) scale(1.04); }
+        }
+
+        .heart-shape:nth-child(odd) {
+            animation-name: floatAndSwayOdd;
+        }
+
+        @keyframes floatAndSwayOdd {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            20% { transform: translate(-15px, -12px) rotate(-5deg) scale(1.06); }
+            40% { transform: translate(10px, -28px) rotate(7deg) scale(0.93); }
+            60% { transform: translate(-20px, -18px) rotate(-4deg) scale(1.10); }
+            80% { transform: translate(14px, -38px) rotate(5deg) scale(0.95); }
+            100% { transform: translate(-8px, -32px) rotate(-3deg) scale(1.03); }
+        }
+
+        /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+        .glow-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 700px;
+            z-index: 1;
+        }
+
+        .glow-wrapper::before {
+            content: '';
+            position: absolute;
+            width: 90%;
+            max-width: 600px;
+            aspect-ratio: 1/1;
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.4) 0%, rgba(255, 218, 224, 0.2) 50%, transparent 80%);
+            border-radius: 50%;
+            filter: blur(40px);
+            pointer-events: none;
+            z-index: 0;
+            animation: softPulse 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes softPulse {
+            0% { transform: scale(0.95); opacity: 0.6; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .card-stack {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .invitation-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+        }
+
+        .invitation-wrapper:hover {
+            transform: scale(1.04) translateY(-5px);
+        }
+
+        /* === КАРТИНКА === */
+        .image-frame {
+            width: 100%;
+            max-width: 240px;
+            margin-bottom: -1.8rem;
+            position: relative;
+            z-index: 3;
+            border-radius: 40px 40px 30px 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .image-frame img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 34px 34px 24px 24px;
+            object-fit: cover;
+            aspect-ratio: 16/9;
+        }
+
+        .invitation-wrapper:hover .image-frame {
+            transform: translateY(-3px);
+        }
+
+        /* === НЕЖНО-РОЗОВЫЙ БЛОК === */
+        .invitation-card {
+            position: relative;
+            z-index: 2;
+            background: #ffd9e0;
+            background: linear-gradient(145deg, #ffd9e0, #fccfd8);
+            width: 100%;
+            max-width: 520px;
+            padding: 2.8rem 2rem 2.4rem;
+            border-radius: 50px 50px 50px 50px;
+            box-shadow: 0 15px 40px rgba(255, 150, 170, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            text-align: center;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            margin-top: 0;
+            transition: box-shadow 0.35s ease;
+        }
+
+        .invitation-wrapper:hover .invitation-card {
+            box-shadow: 0 25px 50px rgba(255, 130, 160, 0.35), 0 0 0 2px rgba(255, 255, 255, 0.9) inset;
+        }
+
+        .invitation-card::before,
+        .invitation-card::after {
+            content: '';
+            position: absolute;
+            border-radius: 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .invitation-card::before {
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(135deg, #ffffff, #ffffff, #ffffff, #ffffff);
+            background-size: 300% 300%;
+            border-radius: 54px;
+            z-index: -1;
+            filter: blur(2px);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .invitation-wrapper:hover .invitation-card::before {
+            opacity: 0.55;
+            animation: borderGlow 2.8s linear infinite;
+        }
+
+        .invitation-wrapper:hover .invitation-card::after {
+            opacity: 0.3;
+            animation: borderGlowReverse 3.2s linear infinite;
+        }
+
+        .invitation-card::after {
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.8), rgba(255, 240, 240, 0.3), rgba(255, 255, 255, 0.8), rgba(255, 220, 230, 0.5));
+            background-size: 300% 300%;
+            border-radius: 58px;
+            z-index: -2;
+            filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes borderGlowReverse {
+            0% { background-position: 100% 0%; }
+            50% { background-position: 0% 100%; }
+            100% { background-position: 100% 0%; }
+        }
+
+        .content {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+        }
+
+        .greeting {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.8rem;
+            font-weight: 400;
+            color: #7a4a5a;
+            text-shadow: 0 2px 12px rgba(255, 200, 210, 0.6);
+            letter-spacing: 0.03em;
+            line-height: 1.2;
+        }
+
+        .greeting span {
+            display: block;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #925e6e;
+            margin-top: 0.4rem;
+            letter-spacing: 0.08em;
+        }
+
+        /* ===== ЕДИНЫЙ СТИЛЬ ЗАГОЛОВКОВ (как у "Анкета гостя") ===== */
+        .section-title {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #4f2f3a;
+            display: inline-block;
+            font-size: 1.4rem;
+            background: transparent;
+            padding: 0;
+        }
+
+        .section-title i {
+            font-style: normal;
+            margin-right: 0.5rem;
+            color: #b57a8a;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* ===== БЛОК С ДВУМЯ КНОПКАМИ ===== */
+        .buttons-block {
+            background: rgba(255, 245, 240, 0.4);
+            backdrop-filter: blur(2px);
+            padding: 0.6rem 0.8rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 8px rgba(255, 200, 190, 0.15);
+            transition: all 0.2s;
+            text-align: center;
+            width: 100%;
+        }
+
+        .buttons-block .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .buttons-block .action-btn {
+            display: inline-block;
+            padding: 0.6rem 1.8rem;
+            background: rgba(255, 245, 240, 0.7);
+            border: 1px solid rgba(200, 130, 150, 0.4);
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #7a4a5a;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(200, 130, 150, 0.10);
+            cursor: pointer;
+            font-family: 'Quicksand', sans-serif;
+            min-width: 120px;
+        }
+
+        .buttons-block .action-btn:hover {
+            background: #f7b8c8;
+            color: #4f2f3a;
+            border-color: #c97a8a;
+            box-shadow: 0 6px 18px rgba(200, 130, 150, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .buttons-block .action-btn i {
+            font-style: normal;
+            margin-right: 0.4rem;
+        }
+
+        .heart {
+            color: #c97a8a;
+            font-weight: 300;
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            margin: 0.3rem 0 0.1rem;
+        }
+
+        .detail-item {
+            background: rgba(255, 245, 240, 0.4);
+            backdrop-filter: blur(2px);
+            padding: 0.6rem 0.8rem;
+            border-radius: 50px;
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: #4f2f3a;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 8px rgba(255, 200, 190, 0.15);
+            transition: all 0.2s;
+            letter-spacing: 0.02em;
+            text-align: center;
+        }
+
+        .detail-item i {
+            font-style: normal;
+            display: inline-block;
+            margin-right: 0.5rem;
+            color: #b57a8a;
+            font-weight: 300;
+        }
+
+        .detail-item .label-title {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #4f2f3a;
+            font-size: 1.4rem;
+            background: transparent;
+            padding: 0;
+            display: inline-block;
+        }
+
+        .detail-item .label-title i {
+            font-style: normal;
+            margin-right: 0.5rem;
+            color: #b57a8a;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .detail-item a {
+            color: #7a4a5a;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            border-bottom: 1px dashed rgba(180, 120, 140, 0.3);
+        }
+
+        .detail-item a:hover {
+            color: #c97a8a;
+            border-bottom-color: #c97a8a;
+        }
+
+        /* ===== КНОПКА НА КАРТЕ ===== */
+        .map-button {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.7rem 1.6rem;
+            background: rgba(255, 245, 240, 0.7);
+            border: 1px solid rgba(200, 130, 150, 0.4);
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #7a4a5a;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(200, 130, 150, 0.15);
+        }
+
+        .map-button:hover {
+            background: #f7b8c8;
+            color: #4f2f3a;
+            border-color: #c97a8a;
+            box-shadow: 0 6px 18px rgba(200, 130, 150, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .map-button i {
+            font-style: normal;
+            margin-right: 0.4rem;
+        }
+
+        .buttons-block .buttons-subtitle {
+            font-size: 1.05rem;
+            color: #6d4a57;
+            margin-bottom: 0.6rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+
+        .details {
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .tiny-note {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.2rem;
+            color: #be8a9a;
+            opacity: 0.8;
+            margin-top: 0.2rem;
+            letter-spacing: 0.1rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            display: inline-block;
+            backdrop-filter: blur(2px);
+            align-self: center;
+        }
+
+        .floating-hearts {
+            position: absolute;
+            top: -8px;
+            right: 0px;
+            font-size: 1.8rem;
+            opacity: 0.2;
+            pointer-events: none;
+            transform: rotate(10deg);
+            z-index: 0;
+            color: #f7b0c0;
+        }
+
+        .floating-hearts-left {
+            position: absolute;
+            bottom: -5px;
+            left: -5px;
+            font-size: 2.2rem;
+            opacity: 0.2;
+            transform: rotate(-8deg);
+            pointer-events: none;
+            z-index: 0;
+            color: #f7b0c0;
+        }
+
+        /* ===== КАЛЕНДАРЬ ===== */
+        .mini-calendar {
+            display: inline-block;
+            background: rgba(255, 245, 240, 0.35);
+            backdrop-filter: blur(2px);
+            padding: 0.6rem 0.8rem 0.8rem;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            box-shadow: 0 4px 12px rgba(200, 140, 160, 0.10);
+            font-family: 'Quicksand', sans-serif;
+            width: 100%;
+            max-width: 280px;
+            margin: 0.2rem auto 0.1rem;
+        }
+
+        .mini-calendar .month-year {
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            color: #7a4a5a;
+            margin-bottom: 0.3rem;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 0.2rem;
+        }
+
+        .mini-calendar .month-year span:last-child {
+            font-weight: 300;
+            font-size: 0.9rem;
+            color: #9a6a7a;
+        }
+
+        .mini-calendar table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .mini-calendar th {
+            font-weight: 400;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #a57a8a;
+            padding: 0.2rem 0;
+        }
+
+        .mini-calendar td {
+            text-align: center;
+            padding: 0.2rem 0;
+            border-radius: 30px;
+            color: #4f2f3a;
+            font-weight: 300;
+        }
+
+        .mini-calendar .highlight {
+            background: #f7b8c8;
+            color: #4f2f3a;
+            font-weight: 600;
+            border-radius: 30px;
+            box-shadow: 0 2px 8px rgba(255, 130, 160, 0.25);
+            position: relative;
+        }
+
+        .mini-calendar .highlight::after {
+            content: '♥';
+            position: absolute;
+            top: -6px;
+            right: -4px;
+            font-size: 0.6rem;
+            color: #c97a8a;
+        }
+
+        .mini-calendar .empty {
+            color: transparent;
+        }
+
+        /* ===== БЛОК С КРУЖОЧКАМИ (ДРЕСС-КОД) ===== */
+        .dresscode-block {
+            background: rgba(255, 245, 240, 0.4);
+            backdrop-filter: blur(2px);
+            padding: 0.6rem 0.8rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 8px rgba(255, 200, 190, 0.15);
+            transition: all 0.2s;
+            text-align: center;
+            font-size: 1.15rem;
+            color: #4f2f3a;
+        }
+
+        .dresscode-block .dresscode-title {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #4f2f3a;
+            display: inline-block;
+            font-size: 1.4rem;
+            background: transparent;
+            padding: 0;
+            margin-bottom: 0.15rem;
+        }
+
+        .dresscode-block .dresscode-title i {
+            font-style: normal;
+            margin-right: 0.5rem;
+            color: #b57a8a;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .color-dots-inline {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin: 0.3rem 0 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .dot {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+
+        .dot-1 { background: #df5175; }
+        .dot-2 { background: #ffaec2; }
+        .dot-3 { background: #f9e079; }
+        .dot-4 { background: #ffffff; }
+
+        .dresscode-block:hover .dot {
+            transform: scale(1.10);
+        }
+
+        .dresscode-note {
+            font-size: 1.15rem;
+            color: #4f2f3a;
+            margin-top: 0.1rem;
+        }
+
+        .dresscode-block .extra-note {
+            font-size: 1.15rem;
+            color: #4f2f3a;
+            margin-top: 0.2rem;
+        }
+
+        /* === БЛОК ПОЖЕЛАНИЙ === */
+        .wishes-block {
+            background: rgba(255, 245, 240, 0.4);
+            backdrop-filter: blur(2px);
+            padding: 0.6rem 0.8rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 8px rgba(255, 200, 190, 0.15);
+            transition: all 0.2s;
+            text-align: center;
+            font-size: 1.15rem;
+            color: #4f2f3a;
+            line-height: 1.5;
+        }
+
+        .wishes-block .wishes-title {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #4f2f3a;
+            display: inline-block;
+            font-size: 1.4rem;
+            background: transparent;
+            padding: 0;
+            margin-bottom: 0.15rem;
+        }
+
+        .wishes-block .wishes-title i {
+            font-style: normal;
+            margin-right: 0.5rem;
+            color: #b57a8a;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .wishes-block a {
+            color: #7a4a5a;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dashed rgba(180, 120, 140, 0.3);
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .wishes-block a:hover {
+            color: #c97a8a;
+            border-bottom-color: #c97a8a;
+        }
+
+        .wishes-block br {
+            display: block;
+            content: '';
+            margin: 0.2rem 0;
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 550px) {
+            body { padding: 0.8rem; }
+            .glow-wrapper { padding: 0.5rem; }
+            .glow-wrapper::before { width: 95%; max-width: 400px; }
+            .card-stack { max-width: 100%; }
+            .image-frame { max-width: 94%; margin-bottom: -1.4rem; padding: 0.4rem; border-radius: 30px 30px 24px 24px; }
+            .image-frame img { border-radius: 26px 26px 18px 18px; }
+            .invitation-card { padding: 1.8rem 1.2rem 1.8rem; border-radius: 36px 36px 36px 36px; max-width: 100%; }
+            .invitation-card::before { border-radius: 40px; }
+            .invitation-card::after { border-radius: 44px; }
+            .greeting { font-size: 2.2rem; }
+            .greeting span { font-size: 1rem; }
+            .detail-item { font-size: 0.95rem; padding: 0.5rem 0.7rem; }
+            .tiny-note { font-size: 1rem; padding: 0.1rem 1rem; }
+            .floating-hearts,
+            .floating-hearts-left { font-size: 1.4rem; }
+            .invitation-wrapper:hover { transform: scale(1.03) translateY(-3px); }
+            .heart-shape { font-size: 1.2rem !important; opacity: 0.12 !important; }
+            .mini-calendar { max-width: 100%; padding: 0.5rem; }
+            .mini-calendar table { font-size: 0.8rem; }
+            
+            .dot { width: 36px; height: 36px; border-width: 2.5px; }
+            .color-dots-inline { gap: 10px; }
+            
+            .dresscode-block {
+                padding: 0.5rem 0.7rem;
+                font-size: 0.95rem;
+            }
+            .dresscode-block .dresscode-title {
+                font-size: 1.2rem;
+            }
+            .dresscode-note { font-size: 0.95rem; }
+            .dresscode-block .extra-note { font-size: 0.95rem; }
+
+            .wishes-block {
+                padding: 0.5rem 0.7rem;
+                font-size: 0.95rem;
+            }
+            .wishes-block .wishes-title {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+            .buttons-block .buttons-title .section-title {
+                font-size: 1.2rem;
+            }
+            .detail-item .label-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .greeting { font-size: 1.8rem; }
+            .detail-item { font-size: 0.85rem; }
+            .invitation-card { padding: 1.5rem 0.9rem; }
+            .image-frame { padding: 0.3rem; margin-bottom: -1.2rem; }
+            .dot { width: 30px; height: 30px; border-width: 2px; }
+            .color-dots-inline { gap: 8px; }
+            .dresscode-block {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.85rem;
+            }
+            .dresscode-block .dresscode-title {
+                font-size: 1.0rem;
+            }
+            .dresscode-note { font-size: 0.85rem; }
+            .dresscode-block .extra-note { font-size: 0.85rem; }
+            .wishes-block {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.85rem;
+            }
+            .wishes-block .wishes-title {
+                font-size: 1.0rem;
+            }
+            .section-title {
+                font-size: 1.0rem;
+            }
+            .buttons-block .buttons-title .section-title {
+                font-size: 1.0rem;
+            }
+            .detail-item .label-title {
+                font-size: 1.0rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .glow-wrapper::before { width: 650px; height: 650px; }
+            .card-stack { max-width: 560px; }
+            .invitation-card { padding: 3rem 2.6rem 2.6rem; }
+            .greeting { font-size: 3.2rem; }
+            .dot { width: 48px; height: 48px; border-width: 3.5px; }
+            .color-dots-inline { gap: 18px; }
+            .dresscode-block { padding: 0.8rem 1.2rem; }
+            .wishes-block { padding: 0.8rem 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== ФОНОВЫЕ СЕРДЕЧКИ ===== -->
+    <div class="hearts-bg">
+        <div class="heart-shape" style="top: 2%; left: 5%; font-size: 3.2rem; animation-duration: 22s; animation-delay: 0s;">♥</div>
+        <div class="heart-shape" style="top: 7%; right: 8%; font-size: 2.4rem; animation-duration: 18s; animation-delay: 1s;">♥</div>
+        <div class="heart-shape" style="top: 13%; left: 12%; font-size: 4rem; animation-duration: 26s; animation-delay: 2s;">♥</div>
+        <div class="heart-shape" style="top: 20%; right: 3%; font-size: 2.8rem; animation-duration: 20s; animation-delay: 0.5s;">♥</div>
+        <div class="heart-shape" style="top: 28%; left: 4%; font-size: 3.6rem; animation-duration: 24s; animation-delay: 3s;">♥</div>
+        <div class="heart-shape" style="top: 35%; right: 6%; font-size: 2.2rem; animation-duration: 19s; animation-delay: 1.5s;">♥</div>
+        <div class="heart-shape" style="top: 42%; left: 7%; font-size: 3.4rem; animation-duration: 21s; animation-delay: 2.5s;">♥</div>
+        <div class="heart-shape" style="top: 50%; right: 4%; font-size: 2.6rem; animation-duration: 23s; animation-delay: 0.8s;">♥</div>
+        <div class="heart-shape" style="top: 57%; left: 3%; font-size: 3.8rem; animation-duration: 17s; animation-delay: 4s;">♥</div>
+        <div class="heart-shape" style="top: 64%; right: 7%; font-size: 2rem; animation-duration: 25s; animation-delay: 1.2s;">♥</div>
+        <div class="heart-shape" style="top: 72%; left: 6%; font-size: 3rem; animation-duration: 20s; animation-delay: 3.5s;">♥</div>
+        <div class="heart-shape" style="top: 79%; right: 5%; font-size: 2.6rem; animation-duration: 22s; animation-delay: 0.3s;">♥</div>
+        <div class="heart-shape" style="top: 86%; left: 8%; font-size: 3.2rem; animation-duration: 19s; animation-delay: 2.8s;">♥</div>
+        <div class="heart-shape" style="top: 93%; right: 3%; font-size: 2.8rem; animation-duration: 24s; animation-delay: 1.8s;">♥</div>
+        <div class="heart-shape" style="top: 4%; left: 45%; font-size: 2rem; animation-duration: 16s; animation-delay: 5s;">♥</div>
+        <div class="heart-shape" style="top: 15%; left: 35%; font-size: 2.6rem; animation-duration: 21s; animation-delay: 0.7s;">♥</div>
+        <div class="heart-shape" style="top: 28%; left: 55%; font-size: 3.6rem; animation-duration: 27s; animation-delay: 2.2s;">♥</div>
+        <div class="heart-shape" style="top: 42%; left: 40%; font-size: 2.2rem; animation-duration: 18s; animation-delay: 4.2s;">♥</div>
+        <div class="heart-shape" style="top: 56%; left: 52%; font-size: 3.4rem; animation-duration: 23s; animation-delay: 1.1s;">♥</div>
+        <div class="heart-shape" style="top: 70%; left: 38%; font-size: 2.8rem; animation-duration: 20s; animation-delay: 3.8s;">♥</div>
+        <div class="heart-shape" style="top: 84%; left: 48%; font-size: 3rem; animation-duration: 22s; animation-delay: 0.6s;">♥</div>
+        <div class="heart-shape" style="top: 8%; left: 70%; font-size: 2.4rem; animation-duration: 19s; animation-delay: 0.9s;">♥</div>
+        <div class="heart-shape" style="top: 22%; right: 12%; font-size: 3.2rem; animation-duration: 24s; animation-delay: 2.6s;">♥</div>
+        <div class="heart-shape" style="top: 38%; left: 65%; font-size: 2rem; animation-duration: 17s; animation-delay: 4.5s;">♥</div>
+        <div class="heart-shape" style="top: 52%; right: 10%; font-size: 3.6rem; animation-duration: 22s; animation-delay: 0.4s;">♥</div>
+        <div class="heart-shape" style="top: 66%; left: 68%; font-size: 2.6rem; animation-duration: 21s; animation-delay: 3.2s;">♥</div>
+        <div class="heart-shape" style="top: 80%; right: 15%; font-size: 3rem; animation-duration: 25s; animation-delay: 1.6s;">♥</div>
+        <div class="heart-shape" style="top: 10%; left: 22%; font-size: 1.8rem; animation-duration: 15s; animation-delay: 6s;">♥</div>
+        <div class="heart-shape" style="top: 32%; left: 82%; font-size: 2.2rem; animation-duration: 20s; animation-delay: 2.1s;">♥</div>
+        <div class="heart-shape" style="top: 60%; left: 18%; font-size: 2rem; animation-duration: 18s; animation-delay: 5.5s;">♥</div>
+        <div class="heart-shape" style="top: 78%; left: 55%; font-size: 2.4rem; animation-duration: 23s; animation-delay: 0.6s;">♥</div>
+        <div class="heart-shape" style="top: 45%; left: 28%; font-size: 1.6rem; animation-duration: 16s; animation-delay: 7s;">♥</div>
+        <div class="heart-shape" style="top: 90%; left: 72%; font-size: 2.2rem; animation-duration: 21s; animation-delay: 1.9s;">♥</div>
+        <div class="heart-shape" style="top: 18%; left: 90%; font-size: 1.8rem; animation-duration: 19s; animation-delay: 3.3s;">♥</div>
+        <div class="heart-shape" style="top: 75%; left: 12%; font-size: 2.6rem; animation-duration: 24s; animation-delay: 2.8s;">♥</div>
+    </div>
+
+    <!-- ===== ОСНОВНОЙ КОНТЕНТ ===== -->
+    <div class="glow-wrapper">
+        <div class="floating-hearts">✦ ✿ ✦</div>
+        <div class="floating-hearts-left">✿ ✦ ✿</div>
+
+        <div class="card-stack">
+            <div class="invitation-wrapper">
+                <!-- Блок с картинкой -->
+                <div class="image-frame">
+                    <img src="https://i.pinimg.com/originals/d0/16/05/d01605d1db1a4ab0e6f881fd0500c7bc.gif" alt="Приглашение с картинкой">
+                </div>
+
+                <!-- Розовый блок -->
+                <div class="invitation-card">
+                    <div class="content">
+                        <div class="greeting">
+                            Happy Birthday
+                            <span>— приглашаю тебя — <span class="heart">♥</span></span>
+                        </div>
+
+                        <div class="details">
+                            <!-- ===== ДАТА ===== -->
+                            <div class="detail-item">
+                                <span class="label-title"><i>♡</i> Дата</span><br>
+                                3 октября 2026
+                            </div>
+                            
+                            <!-- ===== КАЛЕНДАРЬ ===== -->
+                            <div class="detail-item" style="padding: 0.5rem 0.3rem; background: rgba(255, 245, 240, 0.2);">
+                                <div class="mini-calendar">
+                                    <div class="month-year">
+                                        <span>Октябрь</span>
+                                        <span>2026</span>
+                                    </div>
+                                    <table>
+                                        <thead>
+                                            <tr><th>ПН</th><th>ВТ</th><th>СР</th><th>ЧТ</th><th>ПТ</th><th>СБ</th><th>ВС</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td></td><td></td><td></td><td>1</td><td>2</td><td class="highlight">3</td><td>4</td></tr>
+                                            <tr><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td></tr>
+                                            <tr><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr>
+                                            <tr><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td></tr>
+                                            <tr><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td><td></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- ===== ВРЕМЯ ===== -->
+                            <div class="detail-item">
+                                <span class="label-title"><i>♡</i> Время</span><br>
+                                17:00 — 22:00
+                            </div>
+
+                            <!-- ===== МЕСТО ===== -->
+                            <div class="detail-item">
+                                <span class="label-title"><i>♡</i> Место</span><br>
+                                АнтиКино&Garage
+                                <br>
+                                <a href="https://go.2gis.com/KCImV" target="_blank" class="map-button">
+                                    <i>📍</i> Смотреть на карте
+                                </a>
+                            </div>
+                           
+                            <!-- ===== БЛОК ДРЕСС-КОД С БОЛЬШИМИ КРУЖОЧКАМИ ===== -->
+                            <div class="dresscode-block">
+                                <span class="dresscode-title"><i>♡</i> Дресс-код</span>
+                                
+                                <div class="dresscode-note">
+                                    Для передачи большей атмосферы праздника и красивых фото, буду рада, если ты выберешь одежду в предложенной палитре.
+
+                                    <!-- ЧЕТЫРЕ БОЛЬШИХ ЦВЕТНЫХ КРУЖОЧКА С ОБВОДКОЙ -->
+                                    <div class="color-dots-inline">
+                                        <span class="dot dot-1"></span>
+                                        <span class="dot dot-2"></span>
+                                        <span class="dot dot-3"></span>
+                                        <span class="dot dot-4"></span>
+                                    </div>
+
+                                    Если у тебя нет вещей такого цвета, то покупать их <b>необязательно!</b>
+                                </div>
+                            </div>
+                           
+                            <!-- ===== БЛОК ПОЖЕЛАНИЙ ===== -->
+                            <div class="wishes-block">
+                                <span class="wishes-title"><i>♡</i> Пожелания</span><br>
+                                Главный подарок для меня — твоё присутствие в этот день! <br> 
+                                Очень-очень настоятельно прошу <b>всех</b> сделать мне что-то своими руками! Для меня это что-то особенное, теплое и дороже любых подарков! Если не умеешь делать открытки, я буду рада письму! <br>  
+                                Но если ты хочешь подарить мне подарок, именно для этого я создала вишлист <a href="https://followish.io/mywishlist/bkrfxlw1mi0jsn">(тык)</a> <br> 
+                                (для тех у кого некликабельно, продублирую в тг группе)
+                            </div>
+                            
+                        </div>
+
+                        <div class="buttons-block">
+                            <span class="buttons-title"> <strong class="section-title"> <i>♡</i> Анкета гостя</strong></span>
+                            <div class="buttons-subtitle"> Придешь ко мне на party?</div>
+                            <div class="button-group">
+                                <a href="https://t.me/+RvTTEpDaVI40ZTIy" target="_blank" class="action-btn">
+                                    <i>♡</i> Конечно !
+                                </a>
+                                <a href="https://t.me/plmsyy" target="_blank" class="action-btn">
+                                    <i>♡</i> Боюсь, что никак..
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="tiny-note">
+                            ✧ с теплом и нежностью ✧
+                        </div>
+                    </div>
+                    <!-- Внутренняя дымка -->
+                    <div style="position: absolute; top: 15%; left: 10%; width: 80%; height: 70%; background: radial-gradient(circle, rgba(255, 220, 225, 0.25) 0%, transparent 80%); border-radius: 50%; filter: blur(20px); pointer-events: none; z-index: 0;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
